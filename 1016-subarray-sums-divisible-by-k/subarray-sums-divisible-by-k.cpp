@@ -1,28 +1,37 @@
+#include <vector>
+
+// Fast I/O block that executes before main() starts
+const auto fastIO = []() {
+    std::ios_base::sync_with_stdio(false);
+    std::cin.tie(nullptr);
+    std::cout.tie(nullptr);
+    return 0;
+}();
+
 class Solution {
 public:
-    int subarraysDivByK(vector<int>& nums, int k) {
-        // Array to store how many times each remainder (0 to k-1) occurs
-        vector<int> remainder_counts(k, 0);
-        
-        // Base case: A prefix sum of 0 has a remainder of 0, which happens 1 time initially
+    int subarraysDivByK(std::vector<int>& nums, int k) {
+        // Using a flat array instead of std::vector avoids overhead
+        int remainder_counts[10001] = {0}; 
         remainder_counts[0] = 1;
-        
+
         int prefix_sum = 0;
         int rep = 0;
-        
-        for (int i = 0; i < nums.size(); i++) {
-            prefix_sum += nums[i];
+
+        // Use modern range-based loop to eliminate index calculation overhead
+        for (const int num : nums) {
+            prefix_sum += num;
             
-            // Correct C++ modulo formula for negative numbers
-            int remainder = ((prefix_sum % k) + k) % k;
-            
-            // If we have seen this remainder before, it forms valid subarrays
+            // Fast normalization for negative values
+            int remainder = prefix_sum % k;
+            if (remainder < 0) {
+                remainder += k;
+            }
+
             rep += remainder_counts[remainder];
-            
-            // Record that we saw this remainder one more time
             remainder_counts[remainder]++;
         }
-        
+
         return rep;
     }
 };
