@@ -8,7 +8,7 @@ public:
             newalt += gain[i];
          maxalt = max(maxalt, newalt);
         }
-        
+
         return maxalt;
     }
 };
