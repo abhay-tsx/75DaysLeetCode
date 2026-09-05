@@ -10,7 +10,7 @@ class Solution {
 
         }
         
-         for(int i = n - 1; i >= k; i--){ 
+        for(int i = n - 1; i >= k; i--){ 
             nums[i] = nums[i - k]; 
         } 
             
