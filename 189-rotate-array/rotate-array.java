@@ -1,21 +1,19 @@
 class Solution {
     public void rotate(int[] nums, int k) {
         int n = nums.length;
-        k = k % n; // Handles cases where k is greater than the array length
+        k = k % n;
+        if (k == 0) return; // Quick escape if no rotation is needed
+
+        // 1. Create the temp array to hold the last k elements
+        int[] temp = new int[k];
         
-        reverse(nums, 0, n - 1); // Step 1: Reverse everything
-        reverse(nums, 0, k - 1); // Step 2: Reverse first k elements
-        reverse(nums, k, n - 1); // Step 3: Reverse the rest
-    }
-    
-    // Helper function to reverse elements between start and end indices
-    private void reverse(int[] nums, int start, int end) {
-        while (start < end) {
-            int temp = nums[start];
-            nums[start] = nums[end];
-            nums[end] = temp;
-            start++;
-            end--;
-        }
+        // 2. Copy the last k elements into temp
+        System.arraycopy(nums, n - k, temp, 0, k);
+        
+        // 3. Shift the remaining elements to the right
+        System.arraycopy(nums, 0, nums, k, n - k);
+        
+        // 4. Copy the temp elements back to the front
+        System.arraycopy(temp, 0, nums, 0, k);
     }
 }
